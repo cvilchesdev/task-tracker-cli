@@ -2,20 +2,13 @@
   {
     "id": 1,
     "description": "Realizar el programa",
-    "status": "done",
+    "status": "to-do",
     "createdAt": "2026-01-01T20:33",
-    "updatedAt": "2026-01-01T20:34"
+    "updatedAt": "2026-01-01T20:33"
   },
   {
     "id": 2,
     "description": "Hacer el Yogurt con cereal",
-    "status": "in-progress",
-    "createdAt": "2026-01-01T20:33",
-    "updatedAt": "2026-01-01T20:34"
-  },
-  {
-    "id": 3,
-    "description": "Hacer algo mistico con tu señora esposa",
     "status": "to-do",
     "createdAt": "2026-01-01T20:33",
     "updatedAt": "2026-01-01T20:33"

@@ -1,3 +1,10 @@
+"""
+Task Tracker CLI
+
+Aplicación de línea de comandos para gestionar tareas con persistencia en JSON.
+Soporta: add, update, delete, mark-in-progress, mark-done, list, help.
+Guarda datos en tasks.json en el directorio actual.
+"""
 import sys
 import json
 import os
@@ -5,10 +12,21 @@ from datetime import datetime
 
 
 def main(argv: list[str]) -> None:
+    """
+    Punto de entrada del CLI.
+
+    Analiza los argumentos de la línea de comandos (argv),
+    valida el comando solicitado y delega la acción a la
+    función correspondiente (add, update, delete, list, etc.).
+
+    No devuelve ningún valor. Solo imprime resultados o errores
+    en la salida estándar.
+    """
     if len(argv) < 2:
         print("Uso: task-cli <comando> [argumentos]")
         return
 
+    # argv[1] contiene el comando (add, list, delete, etc.)
     command = argv[1]
 
     if command in {"help", "-h", "--help"}:
@@ -124,6 +142,16 @@ TASK_FILE = "tasks.json"
 
 
 def load_tasks():
+    """
+    Carga las tareas desde el archivo JSON de persistencia.
+
+    Si el archivo no existe, devuelve una lista vacía.
+    Si existe, lee el contenido y lo transforma en una lista
+    de diccionarios (una tarea por diccionario).
+
+    Returns:
+        list[dict]: lista de tareas almacenadas.
+    """
     if not os.path.exists(TASK_FILE):
         return []
 
@@ -132,11 +160,33 @@ def load_tasks():
 
 
 def save_tasks(tasks):
+    """
+    Guarda la lista completa de tareas en el archivo JSON.
+
+    Sobrescribe el contenido anterior del archivo. Se utiliza
+    como mecanismo de persistencia del estado actual del sistema.
+
+    Args:
+        tasks (list[dict]): lista de tareas a guardar.
+    """
     with open(TASK_FILE, "w", encoding="utf-8") as f:
         json.dump(tasks, f, ensure_ascii=False, indent=2)
 
 
 def add_task(description: str) -> int | None:
+    """
+    Crea una nueva tarea con estado inicial 'to-do'.
+
+    Genera un ID único, asigna timestamps de creación y
+    actualización, y guarda la tarea en el archivo JSON.
+
+    Args:
+        description (str): descripción de la tarea.
+
+    Returns:
+        int | None: ID de la tarea creada si es válida,
+        o None si la descripción está vacía o es inválida.
+    """
     description = description.strip()
     if not description:
         return None
@@ -165,6 +215,20 @@ def add_task(description: str) -> int | None:
 
 
 def mark_task(task_id: int, new_status: str) -> bool:
+    """
+    Cambia el estado de una tarea existente.
+
+    Busca la tarea por ID, actualiza su estado y el campo
+    updatedAt, y guarda los cambios en el archivo JSON.
+
+    Args:
+        task_id (int): ID de la tarea a modificar.
+        new_status (str): nuevo estado ('to-do', 'in-progress', 'done').
+
+    Returns:
+        bool: True si la tarea fue encontrada y actualizada,
+        False si el ID no existe.
+    """
     tasks = load_tasks()
     now = datetime.now().isoformat(timespec="minutes")
 
@@ -178,6 +242,19 @@ def mark_task(task_id: int, new_status: str) -> bool:
 
 
 def delete_task(task_id: int) -> bool:
+    """
+    Elimina una tarea según su ID.
+
+    Filtra la lista de tareas y guarda el nuevo estado sin
+    reordenar ni reutilizar IDs.
+
+    Args:
+        task_id (int): ID de la tarea a eliminar.
+
+    Returns:
+        bool: True si la tarea fue eliminada,
+        False si el ID no existe.
+    """
     tasks = load_tasks()
     new_tasks = [t for t in tasks if t["id"] != task_id]
 
@@ -189,6 +266,20 @@ def delete_task(task_id: int) -> bool:
 
 
 def update_task(task_id: int, new_description: str) -> bool:
+    """
+    Actualiza la descripción de una tarea existente.
+
+    Mantiene el ID y la fecha de creación, pero actualiza
+    la descripción y el campo updatedAt.
+
+    Args:
+        task_id (int): ID de la tarea a modificar.
+        new_description (str): nueva descripción de la tarea.
+
+    Returns:
+        bool: True si la tarea fue actualizada,
+        False si el ID no existe o la descripción es inválida.
+    """
     new_description = new_description.strip()
     if not new_description:
         return False
@@ -207,6 +298,12 @@ def update_task(task_id: int, new_description: str) -> bool:
 
 
 def print_help() -> None:
+    """
+    Imprime la ayuda del CLI.
+
+    Muestra todos los comandos disponibles, su uso básico
+    y ejemplos simples de ejecución. No devuelve ningún valor.
+    """
     print(
         'Uso: task-cli <comando> [argumentos]\n'
         '\n'
@@ -228,5 +325,7 @@ def print_help() -> None:
     )
 
 
+# Ejecuta el CLI solo cuando este archivo se ejecuta directamente.
+# Evita que main() se ejecute automáticamente si el archivo es importado como módulo.
 if __name__ == "__main__":
     main(sys.argv)
