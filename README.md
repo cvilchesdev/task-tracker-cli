@@ -1,50 +1,50 @@
 # Task Tracker CLI
 
-CLI simple para gestionar tareas (to-do list) desde la terminal. Permite crear, listar, actualizar, cambiar estado y eliminar tareas.  
-Las tareas se guardan en un archivo `tasks.json` en el directorio actual (persistencia en disco).
+A simple CLI to manage tasks (to-do list) from the terminal. It allows you to create, list, update, change status, and delete tasks.
+Tasks are stored in a tasks.json file in the current directory (disk persistence).
 
-## Requisitos
+## Requirements
 
-- Python 3.10+ (recomendado 3.11+)
-- No usa librerías externas (solo estándar)
+- Python 3.10+ (3.11+ recommended)
+- No external libraries used (standard library only)
 
-## Instalación
+## Installation
 
-Clona o descarga el proyecto y entra a la carpeta:
+Clone or download the project and enter the folder:
 
 ```bash
 cd task-tracker-CLI
 ```
 
-## Para usar:
+## Usage:
 
 ```bash
-python3 task_cli.py <comando> [argumentos]
+python3 task_cli.py <command> [arguments]
 ```
 
-## Para ver la ayuda:
+## Show help:
 
 ```bash
 python3 task_cli.py help
 ```
 
-## Comandos:
+## Commands:
 
-### Agregar tareas:
+### Add tasks:
 
 ```bash
-python3 task_cli.py add "Comprar pan"
+python3 task_cli.py add "Buy bread"
 ```
 
-### Listar
+### List
 
-#### Todas:
+#### All:
 
 ```bash
 python3 task_cli.py list
 ```
 
-#### por estado:
+#### By status:
 
 ```bash
 python3 task_cli.py list to-do
@@ -52,13 +52,13 @@ python3 task_cli.py list in-progress
 python3 task_cli.py list done
 ```
 
-### Actualizacion:
+### Update:
 
 ```bash
-python3 task_cli.py update 1 "Comprar pan y leche"
+python3 task_cli.py update 1 "Buy bread and milk"
 ```
 
-### Marcar estado:
+### Change status
 
 #### in-progress:
 
@@ -72,21 +72,21 @@ python3 task_cli.py mark-in-progress 1
 python3 task_cli.py mark-done 1
 ```
 
-### Eliminar
+### Delete
 
 ```bash
 python3 task_cli.py delete 1
 ```
 
-## Persistencia (tasks.json):
+## Persistence (tasks.json):
 
-El archivo tasks.json se crea automáticamente si no existe. Estructura:
+The tasks.json file is automatically created if it does not exist. Structure:
 
 ```json
 [
   {
     "id": 1,
-    "description": "Comprar pan",
+    "description": "Buy bread",
     "status": "to-do",
     "createdAt": "2026-01-04T15:20",
     "updatedAt": "2026-01-04T15:20"
@@ -94,13 +94,13 @@ El archivo tasks.json se crea automáticamente si no existe. Estructura:
 ]
 ```
 
-## Manejo de errores:
+## Error handling:
 
-- Si falta un argumento, el programa muestra el Uso: correspondiente.
-- Si el id no es numérico, muestra un mensaje de uso.
-- Si el id no existe, informa el error y no modifica el archivo.
+- If an argument is missing, the program displays the corresponding usage message.
+- If the id is not numeric, a usage message is shown.
+- If the id does not exist, the error is reported and the file is not modified.
 
-## Estructura del proyecto:
+## Project structure:
 
-- task_cli.py : código del CLI y lógica de persistencia
-- tasks.json : base de datos local (se genera automáticamente)
+- task_cli.py : CLI code and persistence logic
+- tasks.json : local database (auto-generated)
